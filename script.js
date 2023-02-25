@@ -40,14 +40,20 @@ for (let i = 1; i <= numberOfColumns; i++) {
 }
 
 const clearZeros = function (i, y) {
+  selectId(`mine-${i}-${y}`).classList.add(`visited`);
   for (let a = i - 1; a <= i + 1; a++) {
     if (a === 0 || a > numberOfColumns) continue;
     for (let b = y - 1; b <= y + 1; b++) {
       if (b === 0 || b > numberOfRows) continue;
       let adjunctSquare = document.getElementById(`mine-${a}-${b}`);
       adjunctSquare.classList.remove(`unclicked`);
+
       adjunctSquare.textContent = nearbyBombs[adjunctSquare.id];
-      if (nearbyBombs[adjunctSquare.id] === 0) clearZeros(a, b);
+      if (
+        nearbyBombs[adjunctSquare.id] === 0 &&
+        !adjunctSquare.classList.contains(`visited`)
+      )
+        clearZeros(a, b);
     }
   }
 };
@@ -61,6 +67,7 @@ for (let i = 1; i <= numberOfColumns; i++) {
         clickedSquare.textContent = `bomb`;
       } else if (nearbyBombs[clickedSquare.id] === 0) {
         clickedSquare.textContent = nearbyBombs[clickedSquare.id];
+        clickedSquare.classList.add(`visited`);
         clearZeros(i, y);
       } else {
         clickedSquare.textContent = nearbyBombs[clickedSquare.id];
