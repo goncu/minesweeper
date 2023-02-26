@@ -7,8 +7,23 @@
     <link rel="stylesheet" href="style.css" />
     <script src="script.js" defer></script>
     <title>Minesweeper</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <div class="minefield"></div>
+    <div class="introscreen">
+      <h1>Minesweeper</h1>
+      <p>Choose a difficulty:</p>
+      <div class="difficulty-options">
+        <button class="btn-dif btn-easy">Easy</button
+        ><button class="btn-dif btn-medium">Medium</button
+        ><button class="btn-dif btn-hard">Hard</button>
+      </div>
+    </div>
+    <div class="minefield hidden"></div>
   </body>
 </html>

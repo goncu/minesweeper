@@ -9,17 +9,68 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  font-family: "Press Start 2P", cursive;
+  flex-direction: column;
 }
+h1 {
+  font-size: 64px;
+  margin-top: -100px;
+  margin-bottom: 100px;
+  text-transform: uppercase;
+}
+
+p {
+  text-align: center;
+  font-size: 32px;
+  margin-bottom: 50px;
+}
+
+.difficulty-options {
+  display: flex;
+  justify-content: space-around;
+}
+.btn-dif {
+  background-color: white;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 10px;
+  font-family: "Press Start 2P", cursive;
+  border-radius: 5px;
+}
+.btn-dif:hover,
+.btn-dif:active {
+  background-color: black;
+  color: white;
+}
+
 .minefield {
-  width: 500px;
-  height: 500px;
   border: 5px solid black;
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
-  grid-template-rows: repeat(10, 1fr);
+}
+
+.easy {
+  gridtemplatecolumns: repeat(10, 1fr);
+  gridtemplaterows: repeat(10, 1fr);
+}
+.medium {
+  grid-template-columns: repeat(16, 1fr);
+  grid-template-rows: repeat(16, 1fr);
+}
+.hard {
+  grid-template-columns: repeat(30, 1fr);
+  grid-template-rows: repeat(16, 1fr);
+}
+.hidden {
+  display: none;
 }
 .minesquare {
   border: 1px solid black;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .unclicked {
