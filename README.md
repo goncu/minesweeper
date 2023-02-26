@@ -1,5 +1,6 @@
 # minesweeper
-  TODO
-  * implement removing flags, remainin unclicked status and showing bombs to endingGame function
-  
-  
+
+TODO
+
+- add auto-complete option
+- look in early complete issue
