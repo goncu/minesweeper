@@ -52,15 +52,40 @@ const calculateAdjBombs = function () {
 
 const countForWin = function () {
   clickedCounter--;
-  console.log(clickedCounter);
   if (clickedCounter === 0) {
     gameStatus = `won`;
     endingGame();
   }
 };
 
+const finalDisplay = function () {
+  for (let i = 1; i <= numberOfRows; i++) {
+    for (let y = 1; y <= numberOfColumns; y++) {
+      let theSquare = selectId(`square-${i}-${y}`);
+      theSquare.classList.remove(`flagged`);
+      theSquare.classList.remove(`unclicked`);
+      if (
+        theSquare.classList.contains(`bomb`) &&
+        !theSquare.classList.contains(`exploded`)
+      ) {
+        theSquare.textContent = `💣`;
+      } else if (theSquare.classList.contains(`exploded`)) {
+        theSquare.textContent = `💥`;
+      } else {
+        if (!(nearbyBombs[theSquare.id] === 0)) {
+          theSquare.textContent = `${nearbyBombs[theSquare.id]}`;
+        } else {
+          theSquare.textContent = ``;
+        }
+      }
+    }
+  }
+};
+
 const endingGame = function () {
   // remove flags and show mines
+  finalDisplay();
+
   selectClass(`ending-title`).textContent =
     gameStatus === `won` ? `You won the game!` : `You lost the game!`;
   selectClass(`ending-title`).classList.remove(`not-shown`);
@@ -115,7 +140,7 @@ const clickingSquares = function () {
           if (!clickedSquare.classList.contains(`flagged`)) {
             clickedSquare.classList.remove(`unclicked`);
             if (clickedSquare.classList.contains("bomb")) {
-              clickedSquare.textContent = `💣`;
+              clickedSquare.classList.add(`exploded`);
               gameStatus = `lost`;
               endingGame();
             } else if (nearbyBombs[clickedSquare.id] === 0) {

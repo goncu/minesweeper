@@ -25,9 +25,11 @@ p {
   margin-bottom: 50px;
 }
 
-.difficulty-options {
+.difficulty-options,
+.difficulty-options-end {
   display: flex;
   justify-content: space-around;
+  gap: 30px;
 }
 .btn-dif {
   background-color: white;
@@ -48,19 +50,6 @@ p {
   border: 5px solid black;
   display: grid;
 }
-
-/* .easy {
-  grid-template-columns: repeat(10, 1fr);
-  grid-template-rows: repeat(10, 1fr);
-}
-.medium {
-  grid-template-columns: repeat(16, 1fr);
-  grid-template-rows: repeat(16, 1fr);
-}
-.hard {
-  grid-template-columns: repeat(30, 1fr);
-  grid-template-rows: repeat(16, 1fr);
-} */
 .hidden {
   display: none;
 }
