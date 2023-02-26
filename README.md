@@ -1,5 +1,5 @@
 # minesweeper
   TODO
-  * implement ending
+  * implement removing flags, remainin unclicked status and showing bombs to endingGame function
   
   
