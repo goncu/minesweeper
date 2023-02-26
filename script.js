@@ -129,7 +129,7 @@ const clickingSquares = function () {
           if (clickedSquare.classList.contains(`flagged`)) {
             clickedSquare.classList.remove(`flagged`);
             clickedSquare.textContent = ``;
-          } else {
+          } else if (clickedSquare.classList.contains(`unclicked`)) {
             clickedSquare.textContent = `🚩`;
             clickedSquare.classList.add(`flagged`);
           }
