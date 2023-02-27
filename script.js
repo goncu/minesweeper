@@ -45,8 +45,14 @@ const createMinefield = function () {
 // placing mines based on difficulty
 const placeMines = function () {
   for (let i = 1; i <= numberOfMines; i++) {
-    let columnNumber = Math.trunc(Math.random() * numberOfColumns) + 1;
-    let rowNumber = Math.trunc(Math.random() * numberOfRows) + 1;
+    let columnNumber = Math.trunc(Math.random() * numberOfColumns + 1);
+    let rowNumber = Math.trunc(Math.random() * numberOfRows + 1);
+    if (
+      selectId(`square-${rowNumber}-${columnNumber}`).classList.contains(`bomb`)
+    ) {
+      i--;
+      continue;
+    }
     selectId(`square-${rowNumber}-${columnNumber}`).classList.add(`bomb`);
   }
 };
