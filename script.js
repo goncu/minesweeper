@@ -106,37 +106,58 @@ const clearAroundZeros = function (i, y) {
     }
   }
 };
+// function for flagging
+const flagTheSquare = function (square) {
+  if (gameStatus === `inProgress`) {
+    if (square.classList.contains(`question-mark`)) {
+      square.classList.remove(`question-mark`);
+      square.textContent = ``;
+    } else if (square.classList.contains(`flagged`)) {
+      square.classList.remove(`flagged`);
+      square.classList.add(`question-mark`);
+      flagCounter--;
+      square.textContent = `?`;
+      selectClass(`instruction`).textContent = `Remaining mines: ${
+        numberOfMines - flagCounter
+      }.`;
+    } else if (square.classList.contains(`unclicked`)) {
+      square.textContent = `🚩`;
+      square.classList.add(`flagged`);
+      flagCounter++;
+      selectClass(`instruction`).textContent = `Remaining mines: ${
+        numberOfMines - flagCounter
+      }.`;
+      if (flagCounter === numberOfMines) {
+        selectClass(`btn-end`).classList.remove(`hidden`);
+      }
+    }
+  }
+};
+//function for flagging with key press
+const flagWithPress = function () {
+  let hovered = ``;
+  for (let i = 1; i <= numberOfRows; i++) {
+    for (let y = 1; y <= numberOfColumns; y++) {
+      const hoveredSquare = selectId(`square-${i}-${y}`);
+      hoveredSquare.addEventListener(`mouseover`, function () {
+        hovered = hoveredSquare;
+      });
+      document.addEventListener(`keydown`, function (el) {
+        if (el.key === `f`) {
+          flagTheSquare(hovered);
+        }
+      });
+    }
+  }
+};
+
 // function for click behaviour of squares
 const clickingSquares = function () {
   for (let i = 1; i <= numberOfRows; i++) {
     for (let y = 1; y <= numberOfColumns; y++) {
       const clickedSquare = selectId(`square-${i}-${y}`);
-      //for flagging by middle clicking
       clickedSquare.addEventListener(`auxclick`, () => {
-        if (gameStatus === `inProgress`) {
-          if (clickedSquare.classList.contains(`question-mark`)) {
-            clickedSquare.classList.remove(`question-mark`);
-            clickedSquare.textContent = ``;
-          } else if (clickedSquare.classList.contains(`flagged`)) {
-            clickedSquare.classList.remove(`flagged`);
-            clickedSquare.classList.add(`question-mark`);
-            flagCounter--;
-            clickedSquare.textContent = `?`;
-            selectClass(`instruction`).textContent = `Remaining mines: ${
-              numberOfMines - flagCounter
-            }.`;
-          } else if (clickedSquare.classList.contains(`unclicked`)) {
-            clickedSquare.textContent = `🚩`;
-            clickedSquare.classList.add(`flagged`);
-            flagCounter++;
-            selectClass(`instruction`).textContent = `Remaining mines: ${
-              numberOfMines - flagCounter
-            }.`;
-            if (flagCounter === numberOfMines) {
-              selectClass(`btn-end`).classList.remove(`hidden`);
-            }
-          }
-        }
+        flagTheSquare(clickedSquare);
       });
       // for left clicking
       clickedSquare.addEventListener(`click`, () => {
@@ -227,6 +248,7 @@ selectAll(`btn-dif`).forEach((btn) =>
     placeMines();
     calculateAdjMines();
     clickingSquares();
+    flagWithPress();
   })
 );
 // functionality of Complete button
