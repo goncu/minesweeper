@@ -29,6 +29,9 @@ const startTheGame = function (nor, noc, nom) {
   selectClass(`difficulty-options-end`).classList.remove(`hidden`);
   selectClass(`instruction`).classList.remove(`hidden`);
   selectClass(`instruction`).classList.remove(`not-shown`);
+  selectClass(`instruction`).textContent = `Remaining mines: ${
+    numberOfMines - flagCounter
+  }.`;
 };
 //creating playing field based on difficulty
 const createMinefield = function () {
@@ -84,6 +87,13 @@ const clearAroundZeros = function (i, y) {
       if (b === 0 || b > numberOfColumns) continue;
       let adjacentSquare = document.getElementById(`square-${a}-${b}`);
       adjacentSquare.classList.remove(`unclicked`);
+      if (adjacentSquare.classList.contains(`flagged`)) {
+        adjacentSquare.classList.remove(`flagged`);
+        flagCounter--;
+        selectClass(`instruction`).textContent = `Remaining mines: ${
+          numberOfMines - flagCounter
+        }.`;
+      }
       nearbyMines[adjacentSquare.id] === 0
         ? (adjacentSquare.textContent = ``)
         : (adjacentSquare.textContent = nearbyMines[adjacentSquare.id]);
@@ -112,10 +122,16 @@ const clickingSquares = function () {
             clickedSquare.classList.add(`question-mark`);
             flagCounter--;
             clickedSquare.textContent = `?`;
+            selectClass(`instruction`).textContent = `Remaining mines: ${
+              numberOfMines - flagCounter
+            }.`;
           } else if (clickedSquare.classList.contains(`unclicked`)) {
             clickedSquare.textContent = `🚩`;
             clickedSquare.classList.add(`flagged`);
             flagCounter++;
+            selectClass(`instruction`).textContent = `Remaining mines: ${
+              numberOfMines - flagCounter
+            }.`;
             if (flagCounter === numberOfMines) {
               selectClass(`btn-end`).classList.remove(`hidden`);
             }
