@@ -7,28 +7,28 @@ let numberOfRows = 0,
 const selectClass = (a) => document.querySelector(`.${a}`),
   selectAll = (a) => document.querySelectorAll(`.${a}`),
   selectId = (a) => document.getElementById(`${a}`),
-  nearbyBombs = {};
+  nearbyMines = {};
 //functions
 //setting starting conditions
 const startTheGame = function (nor, noc, nom) {
   gameStatus = `inProgress`;
-  selectClass(`minefield`).innerHTML = ` `;
   numberOfRows = nor;
   numberOfColumns = noc;
   numberOfMines = nom;
   flagCounter = 0;
-  selectClass(`ending-title`).classList.add(`not-shown`);
-  selectClass(`play-again`).classList.add(`not-shown`);
-  selectClass(`difficulty-options-end`).classList.add(`not-shown`);
-  selectClass(`minefield`).classList.remove(`hidden`);
-  selectClass(`instruction`).classList.remove(`hidden`);
-  selectClass(`instruction`).classList.remove(`not-shown`);
-  selectClass(`ending-title`).classList.remove(`hidden`);
-  selectClass(`play-again`).classList.remove(`hidden`);
-  selectClass(`difficulty-options-end`).classList.remove(`hidden`);
+  selectClass(`introscreen`).classList.add(`hidden`);
+  selectClass(`minefield`).innerHTML = ` `;
   selectClass(`minefield`).style.gridTemplateColumns = `repeat(${noc}, 1fr)`;
   selectClass(`minefield`).style.gridTemplateRows = `repeat(${nor}, 1fr)`;
-  selectClass(`introscreen`).classList.add(`hidden`);
+  selectClass(`minefield`).classList.remove(`hidden`);
+  selectClass(`ending-title`).classList.add(`not-shown`);
+  selectClass(`ending-title`).classList.remove(`hidden`);
+  selectClass(`play-again`).classList.add(`not-shown`);
+  selectClass(`play-again`).classList.remove(`hidden`);
+  selectClass(`difficulty-options-end`).classList.add(`not-shown`);
+  selectClass(`difficulty-options-end`).classList.remove(`hidden`);
+  selectClass(`instruction`).classList.remove(`hidden`);
+  selectClass(`instruction`).classList.remove(`not-shown`);
 };
 //creating playing field based on difficulty
 const createMinefield = function () {
@@ -48,50 +48,50 @@ const placeMines = function () {
     let columnNumber = Math.trunc(Math.random() * numberOfColumns + 1);
     let rowNumber = Math.trunc(Math.random() * numberOfRows + 1);
     if (
-      selectId(`square-${rowNumber}-${columnNumber}`).classList.contains(`bomb`)
+      selectId(`square-${rowNumber}-${columnNumber}`).classList.contains(`mine`)
     ) {
       i--;
       continue;
     }
-    selectId(`square-${rowNumber}-${columnNumber}`).classList.add(`bomb`);
+    selectId(`square-${rowNumber}-${columnNumber}`).classList.add(`mine`);
   }
 };
-// calculating the number of adjacent mines for each square without a bomb
-const calculateAdjBombs = function () {
+// calculating the number of adjacent mines for each square without a mine
+const calculateAdjMines = function () {
   for (let i = 1; i <= numberOfRows; i++) {
     for (let y = 1; y <= numberOfColumns; y++) {
       let counter = 0;
-      if (selectId(`square-${i}-${y}`).classList.contains(`bomb`)) continue;
+      if (selectId(`square-${i}-${y}`).classList.contains(`mine`)) continue;
       for (let a = i - 1; a <= i + 1; a++) {
         if (a === 0 || a > numberOfRows) continue;
         for (let b = y - 1; b <= y + 1; b++) {
           if (b === 0 || b > numberOfColumns) continue;
-          if (selectId(`square-${a}-${b}`).classList.contains(`bomb`))
+          if (selectId(`square-${a}-${b}`).classList.contains(`mine`))
             ++counter;
         }
       }
-      nearbyBombs[`square-${i}-${y}`] = counter;
+      nearbyMines[`square-${i}-${y}`] = counter;
       counter = 0;
     }
   }
 };
-// chain clearing the adjacent squares of 0-squares
-const clearZeros = function (i, y) {
+// chain clearing the adjacent squares of squares with no adjacent mines
+const clearAroundZeros = function (i, y) {
   selectId(`square-${i}-${y}`).classList.add(`visited`);
   for (let a = i - 1; a <= i + 1; a++) {
     if (a === 0 || a > numberOfRows) continue;
     for (let b = y - 1; b <= y + 1; b++) {
       if (b === 0 || b > numberOfColumns) continue;
-      let adjunctSquare = document.getElementById(`square-${a}-${b}`);
-      adjunctSquare.classList.remove(`unclicked`);
-      nearbyBombs[adjunctSquare.id] === 0
-        ? (adjunctSquare.textContent = ``)
-        : (adjunctSquare.textContent = nearbyBombs[adjunctSquare.id]);
+      let adjacentSquare = document.getElementById(`square-${a}-${b}`);
+      adjacentSquare.classList.remove(`unclicked`);
+      nearbyMines[adjacentSquare.id] === 0
+        ? (adjacentSquare.textContent = ``)
+        : (adjacentSquare.textContent = nearbyMines[adjacentSquare.id]);
       if (
-        nearbyBombs[adjunctSquare.id] === 0 &&
-        !adjunctSquare.classList.contains(`visited`)
+        nearbyMines[adjacentSquare.id] === 0 &&
+        !adjacentSquare.classList.contains(`visited`)
       ) {
-        clearZeros(a, b);
+        clearAroundZeros(a, b);
       }
     }
   }
@@ -101,6 +101,7 @@ const clickingSquares = function () {
   for (let i = 1; i <= numberOfRows; i++) {
     for (let y = 1; y <= numberOfColumns; y++) {
       const clickedSquare = selectId(`square-${i}-${y}`);
+      //for flagging by middle clicking
       clickedSquare.addEventListener(`auxclick`, () => {
         if (gameStatus === `inProgress`) {
           if (clickedSquare.classList.contains(`flagged`)) {
@@ -117,20 +118,21 @@ const clickingSquares = function () {
           }
         }
       });
+      // for left clicking
       clickedSquare.addEventListener(`click`, () => {
         if (gameStatus === `inProgress`) {
           if (!clickedSquare.classList.contains(`flagged`)) {
             clickedSquare.classList.remove(`unclicked`);
-            if (clickedSquare.classList.contains("bomb")) {
+            if (clickedSquare.classList.contains(`mine`)) {
               clickedSquare.classList.add(`exploded`);
               gameStatus = `lost`;
               endingGame();
-            } else if (nearbyBombs[clickedSquare.id] === 0) {
+            } else if (nearbyMines[clickedSquare.id] === 0) {
               clickedSquare.textContent = ``;
               clickedSquare.classList.add(`visited`);
-              clearZeros(i, y);
+              clearAroundZeros(i, y);
             } else {
-              clickedSquare.textContent = nearbyBombs[clickedSquare.id];
+              clickedSquare.textContent = nearbyMines[clickedSquare.id];
             }
           }
         }
@@ -144,7 +146,7 @@ const checkFlags = function () {
     for (let y = 1; y <= numberOfColumns; y++) {
       let squareToCheck = selectId(`square-${i}-${y}`);
       if (
-        squareToCheck.classList.contains(`bomb`) &&
+        squareToCheck.classList.contains(`mine`) &&
         !squareToCheck.classList.contains(`flagged`)
       ) {
         gameStatus = `lost`;
@@ -154,7 +156,7 @@ const checkFlags = function () {
   }
   gameStatus = `won`;
 };
-// for clearing all of the board when the game ends
+// for opening up the minefield when the game ends
 const finalDisplay = function () {
   for (let i = 1; i <= numberOfRows; i++) {
     for (let y = 1; y <= numberOfColumns; y++) {
@@ -162,15 +164,15 @@ const finalDisplay = function () {
       theSquare.classList.remove(`flagged`);
       theSquare.classList.remove(`unclicked`);
       if (
-        theSquare.classList.contains(`bomb`) &&
+        theSquare.classList.contains(`mine`) &&
         !theSquare.classList.contains(`exploded`)
       ) {
         theSquare.textContent = `💣`;
       } else if (theSquare.classList.contains(`exploded`)) {
         theSquare.textContent = `💥`;
       } else {
-        if (!(nearbyBombs[theSquare.id] === 0)) {
-          theSquare.textContent = `${nearbyBombs[theSquare.id]}`;
+        if (!(nearbyMines[theSquare.id] === 0)) {
+          theSquare.textContent = `${nearbyMines[theSquare.id]}`;
         } else {
           theSquare.textContent = ``;
         }
@@ -180,7 +182,6 @@ const finalDisplay = function () {
 };
 // for ending the game
 const endingGame = function () {
-  // remove flags and show mines
   finalDisplay();
   selectClass(`btn-end`).classList.add(`hidden`);
   selectClass(`instruction`).classList.add(`not-shown`);
@@ -200,12 +201,11 @@ selectAll(`btn-dif`).forEach((btn) =>
       : startTheGame(16, 30, 99);
     createMinefield();
     placeMines();
-    calculateAdjBombs();
+    calculateAdjMines();
     clickingSquares();
   })
 );
-
-// complete button functionality
+// functionality of Complete button
 selectClass(`btn-end`).addEventListener(`click`, () => {
   checkFlags();
   endingGame();
