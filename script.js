@@ -99,6 +99,7 @@ const clickingSquares = function () {
         if (gameStatus === `inProgress`) {
           if (clickedSquare.classList.contains(`flagged`)) {
             clickedSquare.classList.remove(`flagged`);
+            flagCounter--;
             clickedSquare.textContent = ``;
           } else if (clickedSquare.classList.contains(`unclicked`)) {
             clickedSquare.textContent = `🚩`;
