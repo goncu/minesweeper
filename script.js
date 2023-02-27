@@ -104,10 +104,14 @@ const clickingSquares = function () {
       //for flagging by middle clicking
       clickedSquare.addEventListener(`auxclick`, () => {
         if (gameStatus === `inProgress`) {
-          if (clickedSquare.classList.contains(`flagged`)) {
-            clickedSquare.classList.remove(`flagged`);
-            flagCounter--;
+          if (clickedSquare.classList.contains(`question-mark`)) {
+            clickedSquare.classList.remove(`question-mark`);
             clickedSquare.textContent = ``;
+          } else if (clickedSquare.classList.contains(`flagged`)) {
+            clickedSquare.classList.remove(`flagged`);
+            clickedSquare.classList.add(`question-mark`);
+            flagCounter--;
+            clickedSquare.textContent = `?`;
           } else if (clickedSquare.classList.contains(`unclicked`)) {
             clickedSquare.textContent = `🚩`;
             clickedSquare.classList.add(`flagged`);
@@ -142,6 +146,7 @@ const clickingSquares = function () {
 };
 // for checking if flags are correctly placed
 const checkFlags = function () {
+  gameStatus = `won`;
   for (let i = 1; i <= numberOfRows; i++) {
     for (let y = 1; y <= numberOfColumns; y++) {
       let squareToCheck = selectId(`square-${i}-${y}`);
@@ -150,11 +155,10 @@ const checkFlags = function () {
         !squareToCheck.classList.contains(`flagged`)
       ) {
         gameStatus = `lost`;
-        return;
+        squareToCheck.classList.add(`miss`);
       }
     }
   }
-  gameStatus = `won`;
 };
 // for opening up the minefield when the game ends
 const finalDisplay = function () {
@@ -165,10 +169,14 @@ const finalDisplay = function () {
       theSquare.classList.remove(`unclicked`);
       if (
         theSquare.classList.contains(`mine`) &&
-        !theSquare.classList.contains(`exploded`)
+        !theSquare.classList.contains(`exploded`) &&
+        !theSquare.classList.contains(`miss`)
       ) {
         theSquare.textContent = `💣`;
-      } else if (theSquare.classList.contains(`exploded`)) {
+      } else if (
+        theSquare.classList.contains(`exploded`) ||
+        theSquare.classList.contains(`miss`)
+      ) {
         theSquare.textContent = `💥`;
       } else {
         if (!(nearbyMines[theSquare.id] === 0)) {
