@@ -1,4 +1,3 @@
-//variables
 let numberOfRows = 0,
   numberOfColumns = 0,
   numberOfMines = 0,
@@ -8,7 +7,6 @@ const selectClass = (a) => document.querySelector(`.${a}`),
   selectAll = (a) => document.querySelectorAll(`.${a}`),
   selectId = (a) => document.getElementById(`${a}`),
   nearbyMines = {};
-//functions
 //setting starting conditions
 const startTheGame = function (nor, noc, nom) {
   gameStatus = `inProgress`;
@@ -150,7 +148,6 @@ const flagWithPress = function () {
     }
   }
 };
-
 // function for click behaviour of squares
 const clickingSquares = function () {
   for (let i = 1; i <= numberOfRows; i++) {
