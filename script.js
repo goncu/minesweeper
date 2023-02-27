@@ -22,7 +22,7 @@ const startTheGame = function (nor, noc, nom) {
   selectClass(`game-info`).classList.remove(`hidden`);
   selectClass(`game-info`).textContent = `Remaining mines: ${
     numberOfMines - flagCounter
-  }.`;
+  }`;
   selectClass(`play-again`).classList.add(`not-shown`);
   selectClass(`play-again`).classList.remove(`hidden`);
   selectClass(`difficulty-options-end`).classList.add(`not-shown`);
@@ -87,7 +87,7 @@ const clearAroundZeros = function (i, y) {
         flagCounter--;
         selectClass(`game-info`).textContent = `Remaining mines: ${
           numberOfMines - flagCounter
-        }.`;
+        }`;
       }
       nearbyMines[adjacentSquare.id] === 0
         ? (adjacentSquare.textContent = ``)
@@ -114,14 +114,14 @@ const flagTheSquare = function (square) {
       square.textContent = `?`;
       selectClass(`game-info`).textContent = `Remaining mines: ${
         numberOfMines - flagCounter
-      }.`;
+      }`;
     } else if (square.classList.contains(`unclicked`)) {
       square.textContent = `🚩`;
       square.classList.add(`flagged`);
       flagCounter++;
       selectClass(`game-info`).textContent = `Remaining mines: ${
         numberOfMines - flagCounter
-      }.`;
+      }`;
       if (flagCounter === numberOfMines) {
         selectClass(`btn-end`).classList.remove(`hidden`);
       }
