@@ -94,14 +94,14 @@ p {
   height: 90vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
   gap: 30px;
 }
 
-.ending-title {
-  font-size: 48px;
-  margin: 0;
+.game-info {
+  font-size: 32px;
+  margin: 50px 0 25px 0;
 }
 .play-again {
   margin: 0;

@@ -19,17 +19,14 @@ const startTheGame = function (nor, noc, nom) {
   selectClass(`minefield`).style.gridTemplateColumns = `repeat(${noc}, 1fr)`;
   selectClass(`minefield`).style.gridTemplateRows = `repeat(${nor}, 1fr)`;
   selectClass(`minefield`).classList.remove(`hidden`);
-  selectClass(`ending-title`).classList.add(`not-shown`);
-  selectClass(`ending-title`).classList.remove(`hidden`);
+  selectClass(`game-info`).classList.remove(`hidden`);
+  selectClass(`game-info`).textContent = `Remaining mines: ${
+    numberOfMines - flagCounter
+  }.`;
   selectClass(`play-again`).classList.add(`not-shown`);
   selectClass(`play-again`).classList.remove(`hidden`);
   selectClass(`difficulty-options-end`).classList.add(`not-shown`);
   selectClass(`difficulty-options-end`).classList.remove(`hidden`);
-  selectClass(`instruction`).classList.remove(`hidden`);
-  selectClass(`instruction`).classList.remove(`not-shown`);
-  selectClass(`instruction`).textContent = `Remaining mines: ${
-    numberOfMines - flagCounter
-  }.`;
 };
 //creating playing field based on difficulty
 const createMinefield = function () {
@@ -88,7 +85,7 @@ const clearAroundZeros = function (i, y) {
       if (adjacentSquare.classList.contains(`flagged`)) {
         adjacentSquare.classList.remove(`flagged`);
         flagCounter--;
-        selectClass(`instruction`).textContent = `Remaining mines: ${
+        selectClass(`game-info`).textContent = `Remaining mines: ${
           numberOfMines - flagCounter
         }.`;
       }
@@ -115,14 +112,14 @@ const flagTheSquare = function (square) {
       square.classList.add(`question-mark`);
       flagCounter--;
       square.textContent = `?`;
-      selectClass(`instruction`).textContent = `Remaining mines: ${
+      selectClass(`game-info`).textContent = `Remaining mines: ${
         numberOfMines - flagCounter
       }.`;
     } else if (square.classList.contains(`unclicked`)) {
       square.textContent = `🚩`;
       square.classList.add(`flagged`);
       flagCounter++;
-      selectClass(`instruction`).textContent = `Remaining mines: ${
+      selectClass(`game-info`).textContent = `Remaining mines: ${
         numberOfMines - flagCounter
       }.`;
       if (flagCounter === numberOfMines) {
@@ -226,10 +223,8 @@ const finalDisplay = function () {
 const endingGame = function () {
   finalDisplay();
   selectClass(`btn-end`).classList.add(`hidden`);
-  selectClass(`instruction`).classList.add(`not-shown`);
-  selectClass(`ending-title`).textContent =
+  selectClass(`game-info`).textContent =
     gameStatus === `won` ? `You won the game!` : `You lost the game!`;
-  selectClass(`ending-title`).classList.remove(`not-shown`);
   selectClass(`play-again`).classList.remove(`not-shown`);
   selectClass(`difficulty-options-end`).classList.remove(`not-shown`);
 };
