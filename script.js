@@ -130,20 +130,20 @@ const flagTheSquare = function (square) {
 };
 //function for flagging with key press
 const flagWithPress = function () {
-  let hovered = ``;
+  let hovered;
   for (let i = 1; i <= numberOfRows; i++) {
     for (let y = 1; y <= numberOfColumns; y++) {
       const hoveredSquare = selectId(`square-${i}-${y}`);
       hoveredSquare.addEventListener(`mouseover`, function () {
         hovered = hoveredSquare;
       });
-      document.addEventListener(`keydown`, function (el) {
-        if (el.key === `f`) {
-          flagTheSquare(hovered);
-        }
-      });
     }
   }
+  document.addEventListener(`keypress`, function (el) {
+    if (el.key === `f`) {
+      flagTheSquare(hovered);
+    }
+  });
 };
 // function for click behaviour of squares
 const clickingSquares = function () {
