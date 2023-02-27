@@ -1,6 +1,5 @@
 # minesweeper
 
-TODO
+A simple minesweeper game.
 
-- add auto-complete option
-- look in early complete issue
+[Live site](https://goncu.github.io/minesweeper/).
