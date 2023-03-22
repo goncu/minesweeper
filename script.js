@@ -248,3 +248,16 @@ selectClass(`btn-end`).addEventListener(`click`, () => {
   checkFlags();
   endingGame();
 });
+
+// theme
+selectClass(`theme-switcher`).addEventListener(`click`, () => {
+  if (document.querySelector(`html`).classList.contains(`light`)) {
+    document.querySelector(`html`).classList.remove(`light`);
+    document.querySelector(`html`).classList.add(`dark`);
+    selectClass(`theme-switcher`).textContent = `Light theme`;
+  } else {
+    document.querySelector(`html`).classList.remove(`dark`);
+    document.querySelector(`html`).classList.add(`light`);
+    selectClass(`theme-switcher`).textContent = `Dark theme`;
+  }
+});

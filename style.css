@@ -4,6 +4,23 @@
   box-sizing: border-box;
 }
 
+:root.light {
+  background-color: white;
+  color: black;
+}
+
+:root.dark {
+  background-color: black;
+  color: white;
+}
+
+.theme-switcher {
+  font-size: 18px !important;
+  position: fixed;
+  right: 0;
+  top: 0;
+}
+
 body {
   height: 100vh;
   display: flex;
@@ -51,7 +68,8 @@ p {
   gap: 30px;
 }
 .btn-dif,
-.btn-end {
+.btn-end,
+.theme-switcher {
   background-color: white;
   border: none;
   font-size: 24px;
@@ -63,7 +81,9 @@ p {
 .btn-dif:hover,
 .btn-dif:active,
 .btn-end:hover,
-.btn-end:active {
+.btn-end:active,
+.theme-switcher:hover,
+.theme-switcher:active {
   background-color: black;
   color: white;
 }
